@@ -1,1 +1,3 @@
-/cs376-env/*
+/cs376-env/*__pycache__/
+*/__pycache__/
+/cs376-env/

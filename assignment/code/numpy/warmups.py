@@ -11,7 +11,8 @@ def w1(X):
 
     Hint: Trust that numpy will do the right thing
     """
-    return None
+    Y = X * 10 + 100
+    return Y
 
 
 def w2(X, Y):
@@ -25,7 +26,8 @@ def w2(X, Y):
 
     Hint: Trust that numpy will do the right thing
     """
-    return None
+    Z = X + 10 * Y
+    return Z
 
 
 def w3(X, Y):
@@ -39,7 +41,8 @@ def w3(X, Y):
 
     Hint: By analogy to +, * will do the same thing
     """
-    return None
+    Z = X * Y - 10
+    return Z
 
 
 def w4(X, Y):
@@ -62,7 +65,8 @@ def w4(X, Y):
     Is this matrix multiplication?
 
     """
-    return None
+    Z = X @ Y
+    return Z
 
 
 def w5(X):
@@ -75,7 +79,8 @@ def w5(X):
 
     Hint: Check .astype() !
     """
-    return None
+    Z = X.astype(int)
+    return Z
 
 
 def w6(X, Y):
@@ -88,7 +93,8 @@ def w6(X, Y):
     A numpy array Z such that Z[i] = float(X[i]) / float(Y[i])
 
     """
-    return None
+    Z = X.astype(float) / Y.astype(float)
+    return Z
 
 
 def w7(X):
@@ -104,7 +110,8 @@ def w7(X):
     1) np.reshape
     2) You can specify an unknown dimension as -1
     """
-    return None
+    Y = np.reshape(X, (-1, 1))
+    return Y
 
 
 def w8(N):
