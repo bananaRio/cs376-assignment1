@@ -14,7 +14,7 @@ def t1(L):
 
     Hint: vstack/hstack/dstack, no for loop
     """
-    return None
+    return np.vstack(L)
 
 
 def t2(X):
@@ -34,7 +34,9 @@ def t2(X):
     2) np.argmin
     3) Watch rows and columns!
     """
-    return None
+    eigenvalues, eigenvectors = np.linalg.eig(X)
+    idx = np.argmin(eigenvalues)
+    return eigenvectors[:, idx]
 
 
 def t3(X):
@@ -54,7 +56,9 @@ def t3(X):
     2) X[S] = v assigns the value v to all entires of X corresponding to
        true values of S.
     """
-    return None
+    X_copy = X.copy()
+    X_copy[X_copy < 0] = 0
+    return X_copy
 
 
 def t4(R, X):
@@ -74,7 +78,7 @@ def t4(R, X):
        by the matrix R.
     2) .T gives the transpose of a matrix
     """
-    return None
+    return X @ R.T
 
 
 def t5(X):
@@ -94,7 +98,7 @@ def t5(X):
        from rows y0 to (but not including!) y1
        from columns x0 (but not including!) x1
     """
-    return None
+    return X[0:4, 0:4] - X[-4:, -4:]
 
 
 def t6(N):
@@ -109,7 +113,12 @@ def t6(N):
     Par: 6 lines
     Instructor: 5 lines
     """
-    return None
+    Z = np.ones((N, N))
+    Z[-5:, :] = 0
+    Z[0:5, :] = 0
+    Z[:, -5:] = 0
+    Z[:, 0:5] = 0
+    return Z
 
 
 def t7(X):
@@ -133,7 +142,7 @@ def t7(X):
     4) Elementwise operations between an array of shape (N, M) and an array of
        shape (N,) won't work -- try reshaping
     """
-    return None
+    return X / (np.sum(X ** 2, axis=1, keepdims=True) ** 0.5)
 
 
 def t8(X):
@@ -153,7 +162,7 @@ def t8(X):
     2) Normalize the rows individually
     3) You may have to reshape
     """
-    return None
+    return (X - np.mean(X, axis=1, keepdims=True)) / np.std(X, axis=1, keepdims=True)
 
 
 def t9(q, k, v):
@@ -175,7 +184,8 @@ def t9(q, k, v):
     2) Recall that np.sum has useful "axis" and "keepdims" options
     3) np.exp and friends apply elementwise to arrays
     """
-    return None
+    dist = np.exp(-np.sum((q-k)**2,axis=1, keepdims=True))
+    return np.sum(dist * v)
 
 
 def t10(Xs):
@@ -199,7 +209,10 @@ def t10(Xs):
     5) Our 3-line solution uses no loops, and uses the algebraic trick from the
        next problem.
     """
-    return None
+    centroids = np.array([np.mean(X, axis=0) for X in Xs])
+    norm_sq = np.sum(centroids ** 2, axis=1)
+    dist = norm_sq[:, None] + norm_sq[None, :] - 2 * centroids @ centroids.T
+    return np.sqrt(np.maximum(0,dist)) # ensure non-negative before sqrt
 
 
 def t11(X):

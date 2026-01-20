@@ -277,7 +277,7 @@ def w19(X):
 
     Hint: np.sum has an optional "keepdims" argument
     """
-    Z = np.sum(X, axis=1, keepdims=True)
+    Z = np.sum(X, axis=1, keepdims=True) # keepdims to maintain 2D shape (N,1), not (N,)
     return Z
 
 
