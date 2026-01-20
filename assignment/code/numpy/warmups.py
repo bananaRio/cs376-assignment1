@@ -125,7 +125,9 @@ def w8(N):
     Hint: The error "data type not understood" means you probably called
     np.ones or np.zeros with two arguments, instead of a tuple for the shape
     """
-    return None
+    # ((1, 3)) not (1, 3)
+    Z = np.ones((N, 2 * N), dtype=float)
+    return Z
 
 
 def w9(X):
@@ -138,7 +140,8 @@ def w9(X):
 
     Hint: Try boolean array indexing
     """
-    return None
+    mask_2d = X > 0.5
+    return mask_2d
 
 
 def w10(N):
@@ -151,7 +154,8 @@ def w10(N):
 
     Hint: np.arange
     """
-    return None
+    X = np.arange(N)
+    return X
 
 
 def w11(A, v):
@@ -163,7 +167,8 @@ def w11(A, v):
     Returns:
     Numpy array of shape (N, 1) giving the matrix-vector product Av
     """
-    return None
+    Z = A @ v
+    return Z
 
 
 def w12(A, v):
@@ -176,7 +181,8 @@ def w12(A, v):
     Numpy array of shape (N, 1) giving the matrix-vector product of the inverse
     of A and v: A^-1 v
     """
-    return None
+    Z = np.linalg.inv(A) @ v
+    return Z
 
 
 def w13(u, v):
@@ -190,7 +196,8 @@ def w13(u, v):
 
     Hint: .T
     """
-    return None
+    Z = u.T @ v
+    return Z
 
 
 def w14(v):
@@ -202,7 +209,8 @@ def w14(v):
     The L2 norm of v: norm = (sum_i^N v[i]^2)^(1/2)
     You MAY NOT use np.linalg.norm
     """
-    return None
+    Z = np.sqrt(np.sum(v ** 2))
+    return Z
 
 
 def w15(X, i):
@@ -214,6 +222,7 @@ def w15(X, i):
     Returns:
     Numpy array of shape (M,) giving the ith row of X
     """
+    return X[i, :]
     return None
 
 
@@ -227,7 +236,7 @@ def w16(X):
 
     Hint: np.sum
     """
-    return None
+    return np.sum(X)
 
 
 def w17(X):
@@ -240,7 +249,8 @@ def w17(X):
 
     Hint: np.sum has an optional "axis" argument
     """
-    return None
+    Z = np.sum(X, axis = 1)
+    return Z
 
 
 def w18(X):
@@ -253,7 +263,8 @@ def w18(X):
 
     Hint: Same as above
     """
-    return None
+    Z = np.sum(X, axis=0)
+    return Z
 
 
 def w19(X):
@@ -266,7 +277,8 @@ def w19(X):
 
     Hint: np.sum has an optional "keepdims" argument
     """
-    return None
+    Z = np.sum(X, axis=1, keepdims=True)
+    return Z
 
 
 def w20(X):
@@ -277,4 +289,5 @@ def w20(X):
     Returns:
     A numpy array S of shape (N, 1) where S[i] is the L2 norm of row i of X
     """
-    return None
+    Z = np.sqrt(np.sum(X ** 2, axis = 1, keepdims=True))
+    return Z
