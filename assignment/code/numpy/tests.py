@@ -237,7 +237,9 @@ def t11(X):
        causing the square root to crash. Just take max(0, value) before the
        square root. Seems to occur on Macs.
     """
-    return None
+    G = X @ X.T
+    s = np.sum(X**2, axis=1)
+    return np.sqrt(np.maximum(0,s[:, None] + s[None, :] - 2*G))
 
 
 def t12(X, Y):
@@ -255,7 +257,10 @@ def t12(X, Y):
 
     Hints: Similar to previous problem
     """
-    return None
+    G = X @ Y.T
+    sX = np.sum(X**2, axis=1)
+    sY = np.sum(Y**2, axis=1)
+    return np.sqrt(np.maximum(0, sX[:, None] + sY[None, :] - 2 *G))
 
 
 def t13(q, V):
@@ -272,7 +277,7 @@ def t13(q, V):
 
     Hint: np.argmax
     """
-    return None
+    return np.argmax(q@V.T)
 
 
 def t14(X, y):
@@ -289,7 +294,8 @@ def t14(X, y):
 
     Hint: np.linalg.lstsq or np.linalg.solve
     """
-    return None
+
+    return np.linalg.lstsq(X,y,rcond=None)[0]
 
 
 def t15(X, Y):
@@ -307,7 +313,8 @@ def t15(X, Y):
 
     Hint: np.cross
     """
-    return None
+
+    return np.cross(X, Y)
 
 
 def t16(X):
@@ -327,7 +334,8 @@ def t16(X):
     1) If it doesn't broadcast, reshape or np.expand_dims
     2) X[:, -1] gives the last column of X
     """
-    return None
+
+    return X[:, :-1] / np.expand_dims(X[:, -1], axis=1)
 
 
 def t17(X):
@@ -345,7 +353,7 @@ def t17(X):
 
     Hint: np.hstack, np.ones
     """
-    return None
+    return np.hstack([X, np.ones((X.shape[0],1))])
 
 
 def t18(N, r, x, y):
@@ -369,7 +377,9 @@ def t18(N, r, x, y):
     it without them, but np.meshgrid and np.arange are easier to understand. 
     2) Arrays have an astype method
     """
-    return None
+    size = np.arange(N) # 0..1.2...=>N-1
+    X, Y = np.meshgrid(size, size)
+    return (((X - x) ** 2 + (Y - y) ** 2) < r**2).astype(float)
 
 
 def t19(N, s, x, y):
@@ -387,7 +397,9 @@ def t19(N, s, x, y):
     Par: 3 lines
     Instructor: 2 lines
     """
-    return None
+    size = np.arange(N)
+    X,Y = np.meshgrid(size,size)
+    return np.exp(- ((X-x) ** 2 + (Y - y) ** 2) / s**2)
 
 
 def t20(N, v):
@@ -409,4 +421,6 @@ def t20(N, v):
        (The sign of the numerator tells which side the point is on)
     2) np.abs
     """
-    return None
+    size = np.arange(N)
+    X, Y = np.meshgrid(size,size)
+    return np.abs(v[0]*X + v[1]*Y + v[2]) / np.sqrt(v[0]**2 + v[1]**2)
