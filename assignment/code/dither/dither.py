@@ -62,7 +62,12 @@ def upscaleNN(I, target_size):
 
 def resizeToSquare(I, maxDim):
     """Given an image, make sure it's no bigger than maxDim on either side"""
-    return I
+    h, w = I.shape[:2]
+    if h <= maxDim and w <= maxDim:
+        return I
+    scale = min(maxDim/h, maxDim/w)
+    new_size = (int(w * scale), int(h * scale))
+    return cv2.resize(I, new_size)
 
 
 def quantize(v, palette):
@@ -70,17 +75,19 @@ def quantize(v, palette):
     Given a scalar v and array of values palette,
     return the index of the closest value
     """
-    idx = np.argmin(np.abs(palette - v), axis = 0)
-    return idx
+    if np.isscalar(v):
+        return np.argmin(np.abs(palette - v))
+    # palette[:, None] makes it (K,) to (K, 1)
+    return np.argmin(np.abs(palette[:, None] - v), axis=0)
 
 
 def quantizeNaive(IF, palette):
     """Given a floating-point image return quantized version (Naive)"""
     # IF = H x W
     # palette = K
-    H, W = IF.shape
+    H, W = IF.shape[:2]
     K = palette.shape[0]
-    output = np.zeros((H, W), dtype=np.uint8)
+    output = np.zeros(IF.shape, dtype=np.uint8)
     # quantizing multiple
     for y in range(H):
         for x in range(W):
@@ -94,8 +101,9 @@ def quantizeFloyd(IF, palette):
     Given a floating-point image return quantized version (Floyd-Steinberg)
     """
     IF = IF.copy()
-    H, W = IF.shape
-    output = np.zeros(IF.shape,dtype=np.uint8)
+    # for coding 3.6, I can't use IF.shape since there is a third element
+    H, W = IF.shape[:2]
+    output = np.zeros(IF.shape, dtype=np.uint8)
     for y in range(H):
         for x in range(W):
             old_value = IF[y][x]
