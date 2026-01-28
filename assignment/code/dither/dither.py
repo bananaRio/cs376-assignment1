@@ -70,20 +70,48 @@ def quantize(v, palette):
     Given a scalar v and array of values palette,
     return the index of the closest value
     """
-    return 0
+    idx = np.argmin(np.abs(palette - v), axis = 0)
+    return idx
 
 
 def quantizeNaive(IF, palette):
     """Given a floating-point image return quantized version (Naive)"""
+    # IF = H x W
+    # palette = K
+    H, W = IF.shape
+    K = palette.shape[0]
+    output = np.zeros((H, W), dtype=np.uint8)
     # quantizing multiple
-    return None
+    for y in range(H):
+        for x in range(W):
+            IF_coordinate = IF[y,x]
+            output[y,x] = quantize(IF_coordinate, palette)
+    return output
 
 
 def quantizeFloyd(IF, palette):
     """
     Given a floating-point image return quantized version (Floyd-Steinberg)
     """
-    return None
+    IF = IF.copy()
+    H, W = IF.shape
+    output = np.zeros(IF.shape,dtype=np.uint8)
+    for y in range(H):
+        for x in range(W):
+            old_value = IF[y][x]
+            idx = quantize(old_value, palette)
+            output[y][x] = idx
+            new_value = palette[idx]
+            error = old_value - new_value
+            if x + 1 < W:
+                IF[y][x+1] += error * 7/16
+            if x - 1 >= 0 and y + 1 < H:
+                IF[y+1][x-1] += error * 3/16
+            if y + 1 < H:
+                IF[y+1][x] += error * 5/16
+            if x + 1 < W and y + 1 < H:
+                IF[y+1][x+1] += error * 1/16
+    return output
 
 
 def quantizeFloydGamma(IF, palette):
@@ -156,6 +184,8 @@ if __name__ == "__main__":
 
         # Call the algorithm and reconstruct the image using the palette
         IQ = algo_fn(I, palette)
+        # Debugging purpose : for Report 3.2
+        #pdb.set_trace()
         R = reconstructImage(IQ, palette)
 
         # Store the height before we upsample
