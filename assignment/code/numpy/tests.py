@@ -211,7 +211,8 @@ def t10(Xs):
     """
     centroids = np.array([np.mean(X, axis=0) for X in Xs])
     norm_sq = np.sum(centroids ** 2, axis=1)
-    dist = norm_sq[:, None] + norm_sq[None, :] - 2 * centroids @ centroids.T
+    with np.errstate(divide='ignore', over='ignore', invalid='ignore'):
+        dist = norm_sq[:, None] + norm_sq[None, :] - 2 * centroids @ centroids.T
     return np.sqrt(np.maximum(0,dist)) # ensure non-negative before sqrt
 
 
@@ -237,7 +238,8 @@ def t11(X):
        causing the square root to crash. Just take max(0, value) before the
        square root. Seems to occur on Macs.
     """
-    G = X @ X.T
+    with np.errstate(divide='ignore', over='ignore', invalid='ignore'):
+        G = X @ X.T
     s = np.sum(X**2, axis=1)
     return np.sqrt(np.maximum(0,s[:, None] + s[None, :] - 2*G))
 
@@ -257,7 +259,8 @@ def t12(X, Y):
 
     Hints: Similar to previous problem
     """
-    G = X @ Y.T
+    with np.errstate(divide='ignore', over='ignore', invalid='ignore'):
+        G = X @ Y.T
     sX = np.sum(X**2, axis=1)
     sY = np.sum(Y**2, axis=1)
     return np.sqrt(np.maximum(0, sX[:, None] + sY[None, :] - 2 *G))
